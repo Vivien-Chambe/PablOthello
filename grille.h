@@ -31,9 +31,15 @@ class Jeu{
     Grille g;
     Joueur J=J1;
     public:
-    Jeu(){};
+    Jeu(){
+        g.ajouterPion(3,3,J1);
+        g.ajouterPion(4,4,J1);
+        g.ajouterPion(3,4,J2);
+        g.ajouterPion(4,3,J2);
+    };
+    bool est_valide(int ligne, int colonne, Joueur joueur);
     bool jouerBlanc(int ligne,int colonne);
     bool jouerNoir(int ligne,int colonne);
-    Etat fini();
+    bool fini();
     void executer();
 };
