@@ -1,11 +1,12 @@
-#include "grille.h"
-#include <iostream>
-using namespace std;
+#include <wx/wx.h>
 
-int main()
-{
-    Jeu j = Jeu();
-    j.executer();
+#include "fenetre.h"
+#include "main.h"
 
-    return 0;
+bool MyApp::OnInit() {
+    Fenetre *fenetre = new Fenetre("PablOthello");
+    fenetre->Show(true);
+    return true;
 }
+
+wxIMPLEMENT_APP(MyApp);

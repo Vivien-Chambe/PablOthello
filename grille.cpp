@@ -29,16 +29,16 @@ void Grille::ajouterPion(int ligne,int colonne, Joueur J){
         grille[ligne][colonne] = Noir;
 }
 int Grille::getEtat(int ligne, int colonne){return grille[ligne][colonne];}
-int Grille::getScore(){
-    int score = 0;
-    for(int i = 0; i<=7; i++)
+vector<int> Grille::getScore(){
+    vector<int> score = {0,0};
+    for(int i = 0; i<n; i++)
     {
-        for(int j = 0; j<=7; j++)
+        for(int j = 0; j<n; j++)
         {
             if (getEtat(i,j) == Noir)
-                score++;
+                score[0]++;
             else if (getEtat(i,j) == Blanc)
-                score--;
+                score[1]++;
         }
     }
     return score;
@@ -47,25 +47,17 @@ int Grille::getScore(){
 
 // classe jeu
 enum Direction {Nord, NordEst, Est, SudEst, Sud, SudOuest, Ouest, NordOuest};
-class Coordonnees{
-    public:
-    int x = 0;
-    int y = 0;
-    Coordonnees(int x,int y): x(x),y(y){}
-    int getx(){return x;}
-    int gety(){return y;}
-};
 
-bool Jeu::est_valide(int ligne, int colonne, Joueur joueur){
+
+bool Jeu::est_valide(int ligne, int colonne, Joueur joueur){ // Doit seulement vérifier si on peut jouer ici
     Etat adv;
     Etat couleur;
     int i = 0;
     int j = 0;
+    int n = g.n;
     if (joueur==J1){adv = Noir;couleur = Blanc;}
     else if (joueur==J2){adv = Blanc;couleur = Noir;}
         
-   
-    
     vector<Coordonnees> a_retourner;
     bool valide=false;
     for (int dx=-1;dx<=1;dx++){
@@ -76,24 +68,13 @@ bool Jeu::est_valide(int ligne, int colonne, Joueur joueur){
             i = ligne+dy;
             j = colonne+dx;
 
-            while(i>=0 && i<=7 && j>=0 && j<=7 && g.getEtat(i,j)==adv){
+            while(i>=0 && i<n && j>=0 && j<n && g.getEtat(i,j)==adv){
                 a_retourner.push_back(Coordonnees(i,j));
                 i+=dy;
                 j+=dx;
             }
-            if(a_retourner.size() >= 1 && i>=0 && i<=7 && j>=0 && j<=7 && g.getEtat(i,j)==couleur){
-                // Afficher le contenu du vecteur a_retourner
-
-                for (int k=0;k<a_retourner.size();k++){
-                    cout << a_retourner[k].getx() << " " << a_retourner[k].gety() << endl;
-                }
-                g.ajouterPion(ligne,colonne,joueur);
-                for(int k = 0; k<a_retourner.size(); k++)
-                {   
-                    g.ajouterPion(a_retourner[k].getx(),a_retourner[k].gety(),joueur);
-                }
+            if(a_retourner.size() >= 1 && i>=0 && i<n && j>=0 && j<n && g.getEtat(i,j)==couleur){
                 valide=true;
-                
             }
             a_retourner.clear();
         }
@@ -106,30 +87,89 @@ bool Jeu::est_valide(int ligne, int colonne, Joueur joueur){
 
 
 bool Jeu::jouerBlanc(int ligne,int colonne){
+    int n = g.n;
     if (g.getEtat(ligne,colonne) == Vide)
     {
-        bool valide = est_valide(ligne,colonne,J1);
-        return valide;
+        if (est_valide(ligne,colonne,J1)){
+            vector<Coordonnees> a_retourner;
+            int i,j;
+            for (int dx=-1;dx<=1;dx++){
+                for(int dy = -1;dy<=1;dy++){
+                    if (dx==0 && dy==0)
+                        continue;
+                
+                    i = ligne+dy;
+                    j = colonne+dx;
+
+                    while(i>=0 && i<n && j>=0 && j<n && g.getEtat(i,j)==Noir){
+                        a_retourner.push_back(Coordonnees(i,j));
+                        i+=dy;
+                        j+=dx;
+                    }
+                    if(a_retourner.size() >= 1 && i>=0 && i<n && j>=0 && j<n && g.getEtat(i,j)==Blanc){
+                        g.ajouterPion(ligne,colonne,J1);
+                        for(int k = 0; k<a_retourner.size(); k++){g.ajouterPion(a_retourner[k].getx(),a_retourner[k].gety(),J1);}
+                    }
+                    a_retourner.clear();
+                }
+            }
+            a_retourner.clear();
+            return true;
+        }
+        else
+            return false;
     }
     else
         return false;
 }
 bool Jeu::jouerNoir(int ligne,int colonne){
+    int n = g.n;
     if (g.getEtat(ligne,colonne) == Vide)
     {
-        bool valide = est_valide(ligne,colonne,J2);
-        return valide;
+        if (est_valide(ligne,colonne,J2)){
+            vector<Coordonnees> a_retourner;
+            int i,j;
+            for (int dx=-1;dx<=1;dx++){
+                for(int dy = -1;dy<=1;dy++){
+                    if (dx==0 && dy==0)
+                        continue;
+                
+                    i = ligne+dy;
+                    j = colonne+dx;
+
+                    while(i>=0 && i<n && j>=0 && j<n && g.getEtat(i,j)==Blanc){
+                        a_retourner.push_back(Coordonnees(i,j));
+                        i+=dy;
+                        j+=dx;
+                    }
+                    if(a_retourner.size() >= 1 && i>=0 && i<n && j>=0 && j<n && g.getEtat(i,j)==Noir){
+                        g.ajouterPion(ligne,colonne,J2);
+                        for(int k = 0; k<a_retourner.size(); k++){g.ajouterPion(a_retourner[k].getx(),a_retourner[k].gety(),J2);}
+                    }
+                    a_retourner.clear();
+                }
+            }
+            a_retourner.clear();
+            return true;
+        }
+        else
+            return false;
     }
     else
         return false;
 }
-bool Jeu::fini(){
-    for(int i = 0; i<=7; i++)
+
+bool Jeu::is_fini(){
+    int n = g.n;
+    for (int i = 0; i < n; i++)
     {
-        for(int j = 0; j<=7; j++)
+        for (int j = 0; j < n; j++)
         {
             if (g.getEtat(i,j) == Vide)
-                return false;
+            {
+                if (est_valide(i,j,J1) || est_valide(i,j,J2))
+                    return false; // 
+            }
         }
     }
     return true;
@@ -166,4 +206,23 @@ void Jeu::executer(){
         }
         g.afficherGrille();
     }
+}
+
+Joueur Jeu::getJoueur(){return J;}
+void Jeu::setJoueur(Joueur j){J = j;}
+
+bool Jeu::peut_jouer(Joueur joueur){
+    int n = g.n;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (g.getEtat(i,j) == Vide)
+            {
+                if (est_valide(i,j,joueur))
+                    return true;
+            }
+        }
+    }
+    return false;
 }
