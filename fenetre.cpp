@@ -78,55 +78,49 @@ Fenetre::Fenetre(const wxString& title)
     nouvellePartie = new wxButton(Plateau,
                             ID_NvllPartie,
                             wxString("Nouvelle Partie"),
-                            wxPoint(300, 50),
+                            wxPoint(300, 850),
                             wxSize(300, 50));
 
     userJ1 = new wxButton(Plateau,
                             ID_USERJ1,
                             wxString("Humain"),
-                            wxPoint(100, 850),
-                            wxSize(300, 50));
+                            wxPoint(25, 425),
+                            wxSize(100, 50));
     userJ1->SetBackgroundColour(wxColour(* wxRED));
 
     iaJ1 = new wxButton(Plateau,
                             ID_IAJ1,
                             wxString("IA Facile"),
-                            wxPoint(100, 900),
-                            wxSize(300, 50));
+                            wxPoint(25, 475),
+                            wxSize(100, 50));
     
     ia2J1 = new wxButton(Plateau,
                             ID_IA2J1,
                             wxString("IA Difficile"),
-                            wxPoint(100, 950),
-                            wxSize(300, 50));
+                            wxPoint(25, 525),
+                            wxSize(100, 50));
 
     userJ2 = new wxButton(Plateau,
                             ID_USERJ2,
                             wxString("Humain"),
-                            wxPoint(500, 850),
-                            wxSize(300, 50));
+                            wxPoint(775, 425),
+                            wxSize(100, 50));
     userJ2->SetBackgroundColour(wxColour(* wxRED));
 
     iaJ2 = new wxButton(Plateau,
                             ID_IAJ2,
                             wxString("IA Facile"),
-                            wxPoint(500, 900),
-                            wxSize(300, 50));
-
+                            wxPoint(775, 475),
+                            wxSize(100, 50));
+    
     ia2J2 = new wxButton(Plateau,
                             ID_IA2J2,
                             wxString("IA Difficile"),
-                            wxPoint(500, 950),
-                            wxSize(300, 50));
-
-
-    
-
+                            wxPoint(775, 525),
+                            wxSize(100, 50));
     timer = new wxTimer(this,TIMER);
-    timer->Start(200);
+    timer->Start(500);
 
-
-    
     // Initialisation du plateau
     for (int i = 0; i < n; i++) {
         for(int k = 0; k < n; k++) {
@@ -286,8 +280,9 @@ void Fenetre::OnLeftClick(wxGridEvent& event){
                     text->SetLabel(wxString("Au tour de J1 (Blanc) car J2 ne peut pas jouer"));
                 }
                 else
-                    //j.fini = true;
+
                     wxMessageBox("Fin de partie", "Fin", wxOK | wxICON_INFORMATION);
+                    
                 
             }
             else{
@@ -299,14 +294,16 @@ void Fenetre::OnLeftClick(wxGridEvent& event){
                     j.setJoueur(J2);
                     text->SetLabel(wxString("Au tour de J2 (Noir) car J1 ne peut pas jouer"));
                 }
-                else
-                    //j.fini = true;
+                else{
+                    cout << "Fin de partie" << endl;
                     wxMessageBox("Fin de partie", "Fin", wxOK | wxICON_INFORMATION);
+                }
+                    
                 
             }
         }
-        else{
-            
+        else
+        {
             wxMessageBox("Coup invalide", "Erreur", wxOK | wxICON_ERROR);
         }
             
@@ -331,8 +328,13 @@ Coordonnees Fenetre::coup_random(Joueur J){
             } 
         }
     }
-    r = rand() % res.size();
-    return res[r];
+    if (res.size() == 0){
+        return Coordonnees(-1,-1); // On renvoie une coordonnée invalide si aucun coup n'est possible
+    }
+    else{
+        r = rand() % res.size();
+        return res[r];
+    }
 }
 
 void Fenetre::OnTimer(wxTimerEvent& event){
@@ -345,29 +347,42 @@ void Fenetre::OnTimer(wxTimerEvent& event){
         Coordonnees c = coup_random(J1);
         ligne = c.getx();
         colonne = c.gety();
-        // On joue le coup
-        cout << "IA blanche JOUE en " << ligne << " " << colonne << endl;
-        j.jouerBlanc(ligne, colonne);
-        // On rafraichit l'affichage
-        
-        // On vérifie que le joueur suivant peut jouer
-        // Si oui 
-        //      On lui passe la main
-        // Si non on redonne la main au joueur
-        // Si aucun des deux peut fin de partie
-        if(j.peut_jouer(J2)){
-                    j.setJoueur(J2);
-                    text->SetLabel(wxString("Au tour de J2 (Noir)"));
-                }
-                else if(j.peut_jouer(J1)){
-                    j.setJoueur(J1);
-                    text->SetLabel(wxString("Au tour de J1 (Blanc) car J2 ne peut pas jouer"));
-                }
-                else
-                    wxMessageBox("Fin de partie", "Fin", wxOK | wxICON_INFORMATION);
 
-
+        if(ligne!=-1 && colonne !=-1){
+                // On joue le coup
+            cout << "IA blanche JOUE en " << ligne << " " << colonne << endl;
+            j.jouerBlanc(ligne, colonne);
+            // On rafraichit l'affichage
+            
+            // On vérifie que le joueur suivant peut jouer
+            // Si oui 
+            //      On lui passe la main
+            // Si non on redonne la main au joueur
+            // Si aucun des deux peut fin de partie
+            if(j.peut_jouer(J2)){
+                        j.setJoueur(J2);
+                        text->SetLabel(wxString("Au tour de J2 (Noir)"));
+                    }
+                    else if(j.peut_jouer(J1)){
+                        j.setJoueur(J1);
+                        text->SetLabel(wxString("Au tour de J1 (Blanc) car J2 ne peut pas jouer"));
+                    }
+                    else
+                        cout << "Fin de partie" << endl;
+        }
+        else{
+            wxMessageBox("Fin de partie", "Fin", wxOK | wxICON_ERROR);
+            flagJ1 = 0;
+            iaJ1->SetBackgroundColour(wxColour(* wxWHITE));
+            ia2J1->SetBackgroundColour(wxColour(* wxWHITE));
+            userJ1->SetBackgroundColour(wxColour(* wxRED));
+            flagJ2 = 0;
+            iaJ2->SetBackgroundColour(wxColour(* wxWHITE));
+            ia2J2->SetBackgroundColour(wxColour(* wxWHITE));
+            userJ2->SetBackgroundColour(wxColour(* wxRED));
+        }
     }
+        
     
     else if (flagJ2 && j.getJoueur()==J2){
         // On joue contre l'IA
@@ -377,28 +392,41 @@ void Fenetre::OnTimer(wxTimerEvent& event){
         Coordonnees c = coup_random(J2);
         ligne = c.getx();
         colonne = c.gety();
-
-        // On joue le coup
-        cout << "IA Noire JOUE en " << ligne << " " << colonne << endl;
-        j.jouerNoir(ligne, colonne);
-        // On rafraichit l'affichage
+        if(ligne!=-1 && colonne !=-1){
+                // On joue le coup
+            cout << "IA Noire JOUE en " << ligne << " " << colonne << endl;
+            j.jouerNoir(ligne, colonne);
+            // On rafraichit l'affichage
+            
+            // On vérifie que le joueur suivant peut jouer
+            // Si oui 
+            //      On lui passe la main
+            // Si non on redonne la main au joueur
+            // Si aucun des deux peut fin de partie
+            if(j.peut_jouer(J1)){
+                        j.setJoueur(J1);
+                        text->SetLabel(wxString("Au tour de J1 (Blanc)"));
+                    }
+                    else if(j.peut_jouer(J2)){
+                        j.setJoueur(J2);
+                        text->SetLabel(wxString("Au tour de J2 (Noir) car J1 ne peut pas jouer"));
+                    }
+                    else
+                        
+                        cout << "Fin de partie" << endl;
+        }
+        else{
+            wxMessageBox("Fin de partie", "Fin", wxOK | wxICON_ERROR);
+            flagJ1 = 0;
+            iaJ1->SetBackgroundColour(wxColour(* wxWHITE));
+            ia2J1->SetBackgroundColour(wxColour(* wxWHITE));
+            userJ1->SetBackgroundColour(wxColour(* wxRED));
+            flagJ2 = 0;
+            iaJ2->SetBackgroundColour(wxColour(* wxWHITE));
+            ia2J2->SetBackgroundColour(wxColour(* wxWHITE));
+            userJ2->SetBackgroundColour(wxColour(* wxRED));
+        }
         
-        // On vérifie que le joueur suivant peut jouer
-        // Si oui 
-        //      On lui passe la main
-        // Si non on redonne la main au joueur
-        // Si aucun des deux peut fin de partie
-        if(j.peut_jouer(J1)){
-                    j.setJoueur(J1);
-                    text->SetLabel(wxString("Au tour de J1 (Blanc)"));
-                }
-                else if(j.peut_jouer(J2)){
-                    j.setJoueur(J2);
-                    text->SetLabel(wxString("Au tour de J2 (Noir) car J1 ne peut pas jouer"));
-                }
-                else
-                    //j.fini = true;
-                    wxMessageBox("Fin de partie", "Fin", wxOK | wxICON_INFORMATION);
     }
     else{
         // On joue contre un autre joueur

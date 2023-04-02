@@ -108,7 +108,7 @@ bool Jeu::jouerBlanc(int ligne,int colonne){
                     }
                     if(a_retourner.size() >= 1 && i>=0 && i<n && j>=0 && j<n && g.getEtat(i,j)==Blanc){
                         g.ajouterPion(ligne,colonne,J1);
-                        for(int k = 0; k<a_retourner.size(); k++){g.ajouterPion(a_retourner[k].getx(),a_retourner[k].gety(),J1);}
+                        for(long unsigned int k = 0; k<a_retourner.size(); k++){g.ajouterPion(a_retourner[k].getx(),a_retourner[k].gety(),J1);}
                     }
                     a_retourner.clear();
                 }
@@ -144,7 +144,7 @@ bool Jeu::jouerNoir(int ligne,int colonne){
                     }
                     if(a_retourner.size() >= 1 && i>=0 && i<n && j>=0 && j<n && g.getEtat(i,j)==Noir){
                         g.ajouterPion(ligne,colonne,J2);
-                        for(int k = 0; k<a_retourner.size(); k++){g.ajouterPion(a_retourner[k].getx(),a_retourner[k].gety(),J2);}
+                        for(long unsigned int k = 0; k<a_retourner.size(); k++){g.ajouterPion(a_retourner[k].getx(),a_retourner[k].gety(),J2);}
                     }
                     a_retourner.clear();
                 }
