@@ -15,7 +15,7 @@ Il est possible de régler la vitesse de jeu des bots à la compilation en rajou
 ### Réglage de la taille de la grille
 
 On peut également régler la taille de la grille en ajoutant `taille=x`. Avec une taille inférieure à 8 on ne peut pas jouer en tant qu'humain mais aucune idée de pourquoi. Cela deviendra donc un mode de test ultra rapide pour les bots. "It's a feature not a bug",Grace Hopper.
-Evidemment en dessous de n=4 cela n'est pas possible.
+Evidemment en dessous de n=2 cela n'est pas possible.
 
 ### Implémentation des IAs
 Nous avons implémenté deux des trois IAs demandées.
