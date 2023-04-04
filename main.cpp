@@ -1,11 +1,12 @@
 #include <wx/wx.h>
 
 #include "fenetre.h"
+#include "menu.h"
 #include "main.h"
 
 bool MyApp::OnInit() {
-    Fenetre *fenetre = new Fenetre("PablOthello");
-    fenetre->Show(true);
+    Menu *menu = new Menu("Menu PablOthello");
+    menu->Show(true);
     return true;
 }
 

@@ -9,8 +9,14 @@ class Grille{
     private:
     vector<vector<int>> grille;
     public:
-    int n = 8; // On peut aller jusquà 40 au maximum avant que l'affichage fasses n'importe quoi
+    int n = 8;
+    
+   
+    // On peut aller jusquà 40 au maximum avant que l'affichage fasses n'importe quoi
     Grille(){
+        #ifdef TAILLE
+        n = TAILLE;
+        #endif
         vector<int> myvector;
         for(int i = 0; i<n; i++)
         {
@@ -36,21 +42,23 @@ class Jeu{
     Grille g;
     bool fini = false;
     Jeu(){
-        g.ajouterPion(3,3,J1);
-        g.ajouterPion(4,4,J1);
-        g.ajouterPion(3,4,J2);
-        g.ajouterPion(4,3,J2);
+        g.ajouterPion((g.n/2)-1,(g.n/2)-1,J1);
+        g.ajouterPion(g.n/2,g.n/2,J1);
+        g.ajouterPion((g.n/2)-1,g.n/2,J2);
+        g.ajouterPion(g.n/2,(g.n/2)-1,J2);
     }
     bool est_valide(int ligne, int colonne, Joueur joueur);
     bool peut_jouer(Joueur joueur);
     bool jouerBlanc(int ligne,int colonne);
     bool jouerNoir(int ligne,int colonne);
+    int nb_pions(int x,int y,Joueur joueur);
     bool is_fini();
     void executer();
     Joueur getJoueur();
     void setJoueur(Joueur joueur);
 };
 
+// J'ai decouvert plus tard qu'il y a std::pair qui fait la meme chose
 class Coordonnees{
     public:
     int x = 0;

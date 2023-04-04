@@ -208,6 +208,47 @@ void Jeu::executer(){
     }
 }
 
+// Fonction qui renvoie le nombre potentiel de pions que le joueur peut retourner en jouant à la position (ligne,colonne)
+
+int Jeu::nb_pions(int ligne, int colonne, Joueur joueur){
+    Etat adv;
+    Etat couleur;
+    int n = g.n;
+    int nb = 0;
+    if (joueur==J1){adv = Noir;couleur = Blanc;}
+    else if (joueur==J2){adv = Blanc;couleur = Noir;}
+
+    if (g.getEtat(ligne,colonne) == Vide)
+    {
+        if (est_valide(ligne,colonne,joueur)){
+            vector<Coordonnees> a_retourner;
+            int i,j;
+            for (int dx=-1;dx<=1;dx++){
+                for(int dy = -1;dy<=1;dy++){
+                    if (dx==0 && dy==0)
+                        continue;
+                
+                    i = ligne+dy;
+                    j = colonne+dx;
+
+                    while(i>=0 && i<n && j>=0 && j<n && g.getEtat(i,j)==adv){
+                        a_retourner.push_back(Coordonnees(i,j));
+                        i+=dy;
+                        j+=dx;
+                    }
+                    if(a_retourner.size() >= 1 && i>=0 && i<n && j>=0 && j<n && g.getEtat(i,j)==couleur){
+                        nb += a_retourner.size();
+                    }
+                    a_retourner.clear();
+                }
+            }
+            a_retourner.clear();
+        }
+    }
+    return nb;
+}
+
+
 Joueur Jeu::getJoueur(){return J;}
 void Jeu::setJoueur(Joueur j){J = j;}
 
