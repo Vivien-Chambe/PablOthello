@@ -19,7 +19,7 @@ Fenetre::Fenetre(const wxString& title)
     PanelJ1->SetBackgroundColour(wxColour(158, 188, 161));
     // Set panel background image
     
-    cactus_blanc = new wxStaticBitmap( PanelJ1, wxID_ANY, wxBitmap("cactus_blancv2.png", wxBITMAP_TYPE_PNG), wxPoint(0,0), wxSize(300, 1000));
+    cactus_blanc = new wxStaticBitmap( PanelJ1, wxID_ANY, wxBitmap("../Images/cactus_blancv2.png", wxBITMAP_TYPE_PNG), wxPoint(0,0), wxSize(300, 1000));
     
 
 
@@ -29,7 +29,7 @@ Fenetre::Fenetre(const wxString& title)
                             wxSize(300, 1000));
     PanelJ2->SetBackgroundColour(wxColour(158, 188, 161));
 
-    cactus_noir = new wxStaticBitmap( PanelJ2, wxID_ANY, wxBitmap("cactus_noirv2.png", wxBITMAP_TYPE_PNG), wxPoint(0,0), wxSize(300, 1000));
+    cactus_noir = new wxStaticBitmap( PanelJ2, wxID_ANY, wxBitmap("../Images/cactus_noirv2.png", wxBITMAP_TYPE_PNG), wxPoint(0,0), wxSize(300, 1000));
     Plateau = new wxPanel(this,
                             wxID_ANY,
                             wxPoint(300, 0),
@@ -404,7 +404,6 @@ Coordonnees Fenetre::coup_max(Joueur J){ //Glouton
             if (j.g.getEtat(i,k) == Vide){
                 if (j.est_valide(i,k,J)){
                     nb = j.nb_pions(i,k,J);
-                    cout << "nb pions : " << nb << endl;
                     if (nb > max){
                         max = nb;
                         colonne = k;

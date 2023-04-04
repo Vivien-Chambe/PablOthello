@@ -4,7 +4,11 @@ Le but de ce projet est de créer un Othello (Reversi) dans un premier temps en 
 
 ## Compilation
 
-Pour compiler le projet, il faut utiliser la commande `make run` à la racine du projet.
+Pour la partie dans le terminal il faut se placer dans le dossier TERMINAL et exécuter la commande `make run`.
+
+Pour compiler le projet dans sa version graphique, il faut utiliser la commande `make run` dans le dossier INTERFACE.
+
+# TOUS CE QUI SUIT CONCERNE UNIQUEMENT LA PARTIE GRAPHIQUE.
 
 ## Fonctionnalités
 
